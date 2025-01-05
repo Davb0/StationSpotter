@@ -13,7 +13,7 @@ function fetchGasStations(location) {
     fetch(url, {
         method: 'GET',
         headers: {
-            'Davb0': 'StationSpotter (spartandavb.201@gmail.com)' // Replace with your website name/contact
+            'User-Agent': 'YourWebsiteName (contact@yourwebsite.com)' // Replace with your website name/contact
         }
     })
     .then(response => response.json())
@@ -66,4 +66,11 @@ function locateUser() {
     map.on('locationerror', (e) => {
         alert("Unable to retrieve your location. Please enable location services.");
     });
+}
+
+// Automatically locate the user on page load (if location permission is granted)
+if (navigator.geolocation) {
+    locateUser();
+} else {
+    alert("Geolocation is not supported by your browser.");
 }

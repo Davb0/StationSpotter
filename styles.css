@@ -1,32 +1,39 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f8f9fa;
 }
 
+/* Header Styles */
 header {
-    background: linear-gradient(to right, #007bff, #0056b3);
+    background: linear-gradient(90deg, #007bff, #0056b3);
     color: white;
     text-shadow: 1px 1px 2px black;
+    padding: 1rem 0;
 }
 
-footer {
-    background: #212529;
-    color: #ffffff;
-    font-size: 0.9rem;
+header h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+header p {
+    font-size: 1rem;
+    margin: 0.5rem 0 0;
 }
 
 /* Map Styling */
 #map {
-    border: 2px solid #ddd;
+    border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Button Styling */
 button {
     transition: all 0.3s ease-in-out;
+    margin-left: 0.5rem;
 }
 
 button:hover {
@@ -34,10 +41,17 @@ button:hover {
     opacity: 0.9;
 }
 
-/* Search Bar Styling */
+/* Search Bar */
 #search-bar {
-    width: 200px;
-    margin-left: 10px;
+    width: 220px;
+    margin-left: 0.5rem;
+}
+
+/* Footer */
+footer {
+    background: #343a40;
+    color: #f8f9fa;
+    font-size: 0.85rem;
 }
 
 /* Mobile Responsive */
@@ -47,11 +61,7 @@ button:hover {
     }
 
     #search-bar {
-        width: 100px;
+        width: 150px;
         font-size: 0.9rem;
-    }
-
-    footer {
-        font-size: 0.8rem;
     }
 }

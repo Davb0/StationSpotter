@@ -13,7 +13,7 @@ function fetchGasStations(location) {
     fetch(url, {
         method: 'GET',
         headers: {
-            'User-Agent': 'YourWebsiteName (contact@yourwebsite.com)' // Replace with your website name/contact
+            'Davb0': 'StationSpotter (spartandavb.201@gmail.com)' // Replace with your website name/contact
         }
     })
     .then(response => response.json())

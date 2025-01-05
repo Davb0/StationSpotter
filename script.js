@@ -12,8 +12,14 @@ function fetchGasStations(lat, lon) {
     const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`; // Adjust bounding box size as needed
     const query = `
 [out:json][timeout:25];
-node["amenity"="fuel"](${boundingBox});
+(
+  node["amenity"="fuel"](${boundingBox});
+  way["amenity"="fuel"](${boundingBox});
+  relation["amenity"="fuel"](${boundingBox});
+);
 out body;
+>;
+out skel qt;
     `;
 
     // Clear existing markers
@@ -31,20 +37,20 @@ out body;
         .then(data => {
             if (data.elements && data.elements.length > 0) {
                 data.elements.forEach(element => {
+                    // Ensure valid coordinates
                     if (element.lat && element.lon) {
+                        // Determine the name or fallback label
+                        const name = element.tags?.name || element.tags?.brand || element.tags?.operator || 'Gas Station';
+
                         const redMarkerIcon = L.icon({
                             iconUrl: 'images/redmarkericon.png',
-                            iconSize: [32, 32],
-                            iconAnchor: [16, 32]
+                            iconSize: [32, 32], // Icon size
+                            iconAnchor: [16, 32] // Anchor point
                         });
 
-                        // Get the name of the gas station from the Overpass data (if available)
-                        const name = element.tags.name || 'Noname Gas Station'; // Default name if not found
-
-                        // Create a marker for the gas station and bind a popup with the name
                         L.marker([element.lat, element.lon], { icon: redMarkerIcon })
                             .addTo(gasStationMarkers)
-                            .bindPopup(`<b>${name}</b>`); // Show the name in the popup
+                            .bindPopup(`<b>${name}</b>`);
                     }
                 });
             } else {
@@ -72,6 +78,10 @@ function locateUser() {
         alert("Unable to retrieve your location. Please enable location services.");
     });
 }
+
+// Automatically locate the user on map load
+locateUser();
+
 
 // Automatically locate the user on map load
 locateUser();

@@ -21,7 +21,7 @@ function fetchGasStations(location) {
         if (data.length > 0) {
             data.forEach(item => {
                 // Add a marker for each gas station
-                L.marker([item.lat, item.lon])
+                const marker = L.marker([item.lat, item.lon])
                     .addTo(map)
                     .bindPopup(`<strong>${item.display_name}</strong>`);
             });
@@ -67,4 +67,3 @@ function locateUser() {
         alert("Unable to retrieve your location. Please enable location services.");
     });
 }
-

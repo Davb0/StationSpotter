@@ -1,57 +1,63 @@
 /* General Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
+    background-color: #f4f4f4;
 }
 
 /* Header Styles */
 header {
     background: linear-gradient(90deg, #007bff, #0056b3);
     color: white;
-    text-shadow: 1px 1px 2px black;
-    padding: 1rem 0;
+    text-align: center;
+    padding: 1rem;
 }
 
 header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem; /* Reduced font size */
     margin: 0;
 }
 
 header p {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Smaller text for description */
     margin: 0.5rem 0 0;
 }
 
 /* Map Styling */
 #map {
+    height: 70vh; /* Reduced height to make room for other content */
     border: 1px solid #ddd;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
 }
 
-/* Button Styling */
+/* Button and Search Bar Styling */
 button {
+    margin-left: 0.3rem;
+    padding: 0.5rem 0.8rem; /* Smaller buttons */
+    font-size: 0.9rem;
     transition: all 0.3s ease-in-out;
-    margin-left: 0.5rem;
 }
 
 button:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     opacity: 0.9;
 }
 
-/* Search Bar */
 #search-bar {
-    width: 220px;
+    width: 180px; /* Smaller input box */
     margin-left: 0.5rem;
+    font-size: 0.9rem;
 }
 
 /* Footer */
 footer {
     background: #343a40;
     color: #f8f9fa;
-    font-size: 0.85rem;
+    text-align: center;
+    font-size: 0.8rem; /* Smaller footer text */
+    padding: 0.5rem 0;
 }
 
 /* Mobile Responsive */
@@ -62,6 +68,15 @@ footer {
 
     #search-bar {
         width: 150px;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+    }
+
+    button {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    #map {
+        height: 60vh; /* Adjust map size for mobile */
     }
 }

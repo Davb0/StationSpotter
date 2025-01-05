@@ -5,58 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gas Station Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f7;
+            color: #333;
         }
 
         h1 {
+            font-size: 2.5rem;
             text-align: center;
             padding: 20px;
             background-color: #4CAF50;
             color: white;
-        }
-
-        #map {
-            height: 500px;
-            margin: 0;
+            margin-bottom: 0;
         }
 
         .container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
         }
 
         .locate-btn {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 10px 30px;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s;
             margin-bottom: 20px;
         }
 
         .locate-btn:hover {
             background-color: #45a049;
+            transform: translateY(-2px);
         }
 
-        .footer {
+        .locate-btn:active {
+            transform: translateY(0);
+        }
+
+        #map {
+            height: 500px;
+            border-radius: 8px;
+        }
+
+        footer {
             text-align: center;
-            padding: 20px;
-            font-size: 14px;
+            padding: 10px;
             background-color: #4CAF50;
             color: white;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .locate-btn {
+                font-size: 1.1rem;
+                padding: 8px 25px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Gas Station Map</h1>
+
+    <h1>Gas Station Locator</h1>
 
     <div class="container">
         <button class="locate-btn" onclick="locateUser()">Locate Me</button>
@@ -64,9 +90,9 @@
 
     <div id="map"></div>
 
-    <div class="footer">
+    <footer>
         <p>Powered by OpenStreetMap and Nominatim API</p>
-    </div>
+    </footer>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="script.js"></script>

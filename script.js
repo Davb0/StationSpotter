@@ -12,7 +12,11 @@ function fetchGasStations(lat, lon) {
     const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`; // Adjust bounding box size as needed
     const query = `
 [out:json][timeout:25];
-node["amenity"="fuel"](${boundingBox});
+(
+  node["amenity"="fuel"](${boundingBox});
+  node["brand"~"OMV|MOL"](${boundingBox});
+  node["operator"~"OMV|MOL"](${boundingBox});
+);
 out body;
     `;
 

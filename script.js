@@ -1,5 +1,5 @@
-let map = L.map('map').setView([45.9432, 24.9668], 7); // Default center: Romania
-let gasStationMarkers = new L.LayerGroup().addTo(map); // Layer for gas station markers
+let map = L.map('map').setView([45.9432, 24.9668], 7); // Centered on Romania
+let gasStationMarkers = L.layerGroup().addTo(map);
 
 // Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -7,13 +7,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Function to fetch and display gas stations based on a bounding box
+// Function to fetch and display gas stations
 function fetchGasStations(lat, lon) {
     const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`;
     const query = `
-    [out:json][timeout:25];
-    node["amenity"="fuel"](${boundingBox});
-    out body;
+[out:json][timeout:25];
+node["amenity"="fuel"](${boundingBox});
+out body;
     `;
 
     gasStationMarkers.clearLayers();
@@ -21,65 +21,60 @@ function fetchGasStations(lat, lon) {
     fetch('https://overpass-api.de/api/interpreter', {
         method: 'POST',
         body: query,
-        headers: { 'Content-Type': 'text/plain' }
+        headers: {
+            'Content-Type': 'text/plain'
+        }
     })
         .then(response => response.json())
         .then(data => {
-            if (data.elements && data.elements.length > 0) {
-                data.elements.forEach(element => {
-                    if (element.lat && element.lon) {
-                        let popupContent = `Gas Station: ${element.tags.name || 'Unnamed'}`;
-                        L.marker([element.lat, element.lon])
-                            .addTo(gasStationMarkers)
-                            .bindPopup(popupContent);
-                    }
-                });
-            } else {
-                alert('No gas stations found in this area.');
-            }
+            data.elements.forEach(element => {
+                if (element.lat && element.lon) {
+                    const marker = L.marker([element.lat, element.lon])
+                        .addTo(gasStationMarkers)
+                        .bindPopup(element.tags.name || 'Gas Station');
+                }
+            });
         })
-        .catch(error => alert('Error fetching gas stations.'));
+        .catch(console.error);
 }
 
-// Locate User
+// Locate the user
 function locateUser() {
     map.locate({ setView: true, maxZoom: 14 });
 
     map.on('locationfound', (e) => {
         const { lat, lng } = e.latlng;
-
         L.marker([lat, lng]).addTo(map).bindPopup('You are here!').openPopup();
-
         fetchGasStations(lat, lng);
     });
 
     map.on('locationerror', () => {
-        alert('Unable to retrieve your location. Please enable location services.');
+        alert('Unable to retrieve location.');
     });
 }
 
-// Search Location
+// Search for an address
 function searchLocation() {
-    const location = document.getElementById('search-bar').value;
-    if (!location) return alert('Please enter a location.');
+    const address = document.getElementById('search-bar').value;
+    if (!address) return;
 
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
         .then(response => response.json())
         .then(data => {
-            if (data && data.length > 0) {
+            if (data.length > 0) {
                 const { lat, lon } = data[0];
                 map.setView([lat, lon], 14);
-                fetchGasStations(parseFloat(lat), parseFloat(lon));
+                fetchGasStations(lat, lon);
             } else {
                 alert('Location not found.');
             }
         })
-        .catch(error => alert('Error fetching location data.'));
+        .catch(console.error);
 }
 
-// Event Listeners
+// Event listeners
 document.getElementById('locate-btn').addEventListener('click', locateUser);
 document.getElementById('search-btn').addEventListener('click', searchLocation);
 
-// Initialize Map
+// Initialize
 locateUser();

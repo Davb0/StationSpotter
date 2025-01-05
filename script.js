@@ -67,3 +67,4 @@ function locateUser() {
         alert("Unable to retrieve your location. Please enable location services.");
     });
 }
+

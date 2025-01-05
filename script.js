@@ -37,9 +37,14 @@ out body;
                             iconSize: [32, 32],
                             iconAnchor: [16, 32]
                         });
+
+                        // Get the name of the gas station from the Overpass data (if available)
+                        const name = element.tags.name || 'Unnamed Gas Station'; // Default name if not found
+
+                        // Create a marker for the gas station and bind a popup with the name
                         L.marker([element.lat, element.lon], { icon: redMarkerIcon })
                             .addTo(gasStationMarkers)
-                            .bindPopup('Gas Station');
+                            .bindPopup(`<b>${name}</b>`); // Show the name in the popup
                     }
                 });
             } else {

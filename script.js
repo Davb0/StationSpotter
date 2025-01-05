@@ -12,14 +12,8 @@ function fetchGasStations(lat, lon) {
     const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`; // Adjust bounding box size as needed
     const query = `
 [out:json][timeout:25];
-(
-  node["amenity"="fuel"](${boundingBox});
-  way["amenity"="fuel"](${boundingBox});
-  relation["amenity"="fuel"](${boundingBox});
-);
+node["amenity"="fuel"](${boundingBox});
 out body;
->;
-out skel qt;
     `;
 
     // Clear existing markers
@@ -37,20 +31,19 @@ out skel qt;
         .then(data => {
             if (data.elements && data.elements.length > 0) {
                 data.elements.forEach(element => {
-                    // Ensure valid coordinates
                     if (element.lat && element.lon) {
-                        // Determine the name or fallback label
-                        const name = element.tags?.name || element.tags?.brand || element.tags?.operator || 'Gas Station';
-
                         const redMarkerIcon = L.icon({
                             iconUrl: 'images/redmarkericon.png',
-                            iconSize: [32, 32], // Icon size
-                            iconAnchor: [16, 32] // Anchor point
+                            iconSize: [32, 32],
+                            iconAnchor: [16, 32]
                         });
+
+                        // Use the gas station name if available, or fallback to a default
+                        const gasStationName = element.tags && element.tags.name ? element.tags.name : "Unnamed Gas Station";
 
                         L.marker([element.lat, element.lon], { icon: redMarkerIcon })
                             .addTo(gasStationMarkers)
-                            .bindPopup(`<b>${name}</b>`);
+                            .bindPopup(`<strong>${gasStationName}</strong>`);
                     }
                 });
             } else {
@@ -78,10 +71,6 @@ function locateUser() {
         alert("Unable to retrieve your location. Please enable location services.");
     });
 }
-
-// Automatically locate the user on map load
-locateUser();
-
 
 // Automatically locate the user on map load
 locateUser();

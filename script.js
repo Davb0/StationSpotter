@@ -35,10 +35,10 @@ function fetchGasStations(lat, lon) {
                     }
                 });
             } else {
-                console.error('No gas stations found in this area.');
+                alert('No gas stations found in this area.');
             }
         })
-        .catch(error => console.error('Error fetching Overpass API data:', error));
+        .catch(error => alert('Error fetching gas stations.'));
 }
 
 // Locate User
@@ -74,7 +74,7 @@ function searchLocation() {
                 alert('Location not found.');
             }
         })
-        .catch(error => console.error('Error fetching location data:', error));
+        .catch(error => alert('Error fetching location data.'));
 }
 
 // Event Listeners
@@ -83,4 +83,3 @@ document.getElementById('search-btn').addEventListener('click', searchLocation);
 
 // Initialize Map
 locateUser();
-

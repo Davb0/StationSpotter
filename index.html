@@ -3,123 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gas Station Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <style>
-        #map { height: 100vh; width: 100%; }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .button-container {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
-        }
-        button {
-            padding: 10px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <title>Gas Station Finder</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="map"></div>
-    <div class="button-container">
-        <button id="locate-btn">Locate Me</button>
+    <header class="bg-primary text-white text-center py-3">
+        <h1>Gas Station Finder</h1>
+        <p>Find gas stations near you and plan your journey with ease</p>
+    </header>
+
+    <div class="container-fluid p-0">
+        <div class="d-flex justify-content-between align-items-center bg-light px-3 py-2">
+            <button id="locate-btn" class="btn btn-success">
+                Locate Me
+            </button>
+            <div>
+                <label for="search-bar" class="form-label m-0">Search Location:</label>
+                <input type="text" id="search-bar" class="form-control d-inline-block" placeholder="Enter city or address">
+                <button id="search-btn" class="btn btn-secondary">Search</button>
+            </div>
+        </div>
+
+        <div id="map" style="height: 80vh;"></div>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script>
-        let map = L.map('map').setView([45.9432, 24.9668], 7); // Default center: Romania
-        let gasStationMarkers = new L.LayerGroup().addTo(map); // Layer for gas station markers
+    <footer class="bg-dark text-white text-center py-3">
+        <p>© 2025 Gas Station Finder | Powered by OpenStreetMap</p>
+    </footer>
 
-        // Add OpenStreetMap tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        // Function to fetch and display gas stations based on a bounding box
-        function fetchGasStations(lat, lon) {
-            const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`; // Adjust bounding box size as needed
-            const query = `
-        [out:json][timeout:25];
-        node["amenity"="fuel"](${boundingBox});
-        out body;
-            `;
-
-            // Clear existing markers
-            gasStationMarkers.clearLayers();
-
-            // Fetch data from Overpass API
-            fetch('https://overpass-api.de/api/interpreter', {
-                method: 'POST',
-                body: query,
-                headers: {
-                    'Content-Type': 'text/plain'
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.elements && data.elements.length > 0) {
-                        data.elements.forEach(element => {
-                            if (element.lat && element.lon) {
-                                const redMarkerIcon = L.icon({
-                                    iconUrl: 'images/redmarkericon.png', // Use your red marker icon path
-                                    iconSize: [32, 32],
-                                    iconAnchor: [16, 32]
-                                });
-
-                                let popupContent = `Gas Station: ${element.tags && element.tags.name ? element.tags.name : 'Unnamed'}`;
-
-                                L.marker([element.lat, element.lon], { icon: redMarkerIcon })
-                                    .addTo(gasStationMarkers)
-                                    .bindPopup(popupContent);
-                            }
-                        });
-                    } else {
-                        console.error('No gas stations found in this area.');
-                    }
-                })
-                .catch(error => console.error('Error fetching Overpass API data:', error));
-        }
-
-        // Function to locate the user and update gas stations
-        function locateUser() {
-            map.locate({ setView: true, maxZoom: 14 });
-
-            map.on('locationfound', (e) => {
-                const { lat, lng } = e.latlng;
-
-                // Add a marker for the user's location
-                L.marker([lat, lng]).addTo(map).bindPopup('You are here!').openPopup();
-
-                // Fetch gas stations near the user's location
-                fetchGasStations(lat, lng);
-            });
-
-            map.on('locationerror', (e) => {
-                alert("Unable to retrieve your location. Please enable location services.");
-            });
-        }
-
-        // Automatically locate the user on map load
-        locateUser();
-
-        // Button to locate user when clicked
-        document.getElementById('locate-btn').addEventListener('click', function() {
-            locateUser();
-        });
-    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+

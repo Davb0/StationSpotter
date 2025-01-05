@@ -29,6 +29,8 @@ out body;
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data); // Debug the raw API response
+
             if (data.elements && data.elements.length > 0) {
                 data.elements.forEach(element => {
                     if (element.lat && element.lon) {
@@ -38,9 +40,19 @@ out body;
                             iconAnchor: [16, 32]
                         });
 
-                        // Use the gas station name if available, or fallback to a default
-                        const gasStationName = element.tags && element.tags.name ? element.tags.name : "Unnamed Gas Station";
+                        // Use the name, brand, or operator fields as a fallback
+                        const gasStationName = element.tags && element.tags.name
+                            ? element.tags.name
+                            : (element.tags && element.tags.brand
+                                ? element.tags.brand
+                                : (element.tags && element.tags.operator
+                                    ? element.tags.operator
+                                    : "Unnamed Gas Station"));
 
+                        // Debug each gas station's tags
+                        console.log('Gas Station Tags:', element.tags);
+
+                        // Create the marker with a popup showing the name
                         L.marker([element.lat, element.lon], { icon: redMarkerIcon })
                             .addTo(gasStationMarkers)
                             .bindPopup(`<strong>${gasStationName}</strong>`);

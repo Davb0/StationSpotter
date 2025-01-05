@@ -1,66 +1,41 @@
-// Initialize the Leaflet map with a center and zoom level
-let map = L.map('map').setView([45.9432, 24.9668], 7); // Default center: Romania
+// Initialize map centered on Romania
+let map = L.map('map').setView([45.9432, 24.9668], 7);
 
-// Add OpenStreetMap tile layer to the map
+// Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Function to fetch gas stations using Nominatim API
-function fetchGasStations(location) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=gas+station&bounded=1&viewbox=${location.west},${location.north},${location.east},${location.south}`;
+// Function to fetch and display gas stations (mock implementation)
+function fetchGasStations(lat, lng) {
+    // Simulate fetching gas stations around the user's location
+    const gasStations = [
+        { lat: lat + 0.02, lon: lng + 0.02, name: 'Gas Station 1' },
+        { lat: lat - 0.03, lon: lng - 0.03, name: 'Gas Station 2' },
+        { lat: lat + 0.03, lon: lng - 0.05, name: 'Gas Station 3' }
+    ];
 
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'User-Agent': 'YourWebsiteName (contact@yourwebsite.com)' // Replace with your website name/contact
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.length > 0) {
-            data.forEach(item => {
-                // Add a marker for each gas station
-                const marker = L.marker([item.lat, item.lon])
-                    .addTo(map)
-                    .bindPopup(`<strong>${item.display_name}</strong>`);
-            });
-        } else {
-            console.error("No gas stations found in this area.");
-        }
-    })
-    .catch(error => console.error("Error fetching Nominatim data:", error));
+    // Add markers for the gas stations
+    gasStations.forEach(station => {
+        L.marker([station.lat, station.lon])
+            .addTo(map)
+            .bindPopup(`<strong>${station.name}</strong>`);
+    });
 }
 
-// Define a bounding box around Romania (can be adjusted as needed)
-const location = {
-    north: 48.265, // Northern latitude
-    south: 43.618, // Southern latitude
-    east: 29.626,  // Eastern longitude
-    west: 20.261   // Western longitude
-};
-
-// Fetch and display gas stations in the specified region (Romania)
-fetchGasStations(location);
-
-// Function to locate the user and update the map
+// Function to locate the user
 function locateUser() {
     map.locate({ setView: true, maxZoom: 14 });
 
     map.on('locationfound', (e) => {
         const { lat, lng } = e.latlng;
+        console.log('Location found:', lat, lng);  // Check the coordinates in the console
 
-        // Add a marker for the user's location
+        // Add marker for user's location
         L.marker([lat, lng]).addTo(map).bindPopup('You are here!').openPopup();
 
-        // Fetch gas stations near the user's location
-        const userLocation = {
-            north: lat + 0.5,
-            south: lat - 0.5,
-            east: lng + 0.5,
-            west: lng - 0.5
-        };
-        fetchGasStations(userLocation);
+        // Fetch and show gas stations near the user's location
+        fetchGasStations(lat, lng);
     });
 
     map.on('locationerror', (e) => {
@@ -68,7 +43,7 @@ function locateUser() {
     });
 }
 
-// Automatically locate the user on page load (if location permission is granted)
+// Automatically locate user when the page loads if geolocation is available
 if (navigator.geolocation) {
     locateUser();
 } else {

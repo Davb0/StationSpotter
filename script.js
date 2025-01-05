@@ -8,10 +8,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Function to fetch gas stations using Nominatim API
 function fetchGasStations(location) {
-    // Create the URL to search for gas stations within the bounding box
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=gas+station&bounded=1&viewbox=${location.west},${location.north},${location.east},${location.south}`;
 
-    // Fetch data from Nominatim API
     fetch(url, {
         method: 'GET',
         headers: {
@@ -21,7 +19,6 @@ function fetchGasStations(location) {
     .then(response => response.json())
     .then(data => {
         if (data.length > 0) {
-            // Loop through the data and add markers to the map
             data.forEach(item => {
                 // Add a marker for each gas station
                 L.marker([item.lat, item.lon])
@@ -46,3 +43,27 @@ const location = {
 // Fetch and display gas stations in the specified region (Romania)
 fetchGasStations(location);
 
+// Function to locate the user and update the map
+function locateUser() {
+    map.locate({ setView: true, maxZoom: 14 });
+
+    map.on('locationfound', (e) => {
+        const { lat, lng } = e.latlng;
+
+        // Add a marker for the user's location
+        L.marker([lat, lng]).addTo(map).bindPopup('You are here!').openPopup();
+
+        // Fetch gas stations near the user's location
+        const userLocation = {
+            north: lat + 0.5,
+            south: lat - 0.5,
+            east: lng + 0.5,
+            west: lng - 0.5
+        };
+        fetchGasStations(userLocation);
+    });
+
+    map.on('locationerror', (e) => {
+        alert("Unable to retrieve your location. Please enable location services.");
+    });
+}

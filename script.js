@@ -83,7 +83,7 @@ function locateUser() {
 
 // Function to search for a location
 function searchLocation() {
-    const location = document.getElementById('search-input').value;
+    const location = document.getElementById('search-input').value.trim();
     if (!location) {
         alert('Please enter a location.');
         return;
@@ -112,4 +112,3 @@ document.getElementById('search-button').addEventListener('click', searchLocatio
 
 // Automatically fetch gas stations for Romania on page load
 fetchGasStations(45.9432, 24.9668);
-

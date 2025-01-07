@@ -12,15 +12,15 @@ let gasStationMarkers = new L.LayerGroup().addTo(map);
 
 // Custom gas pump icon
 const gasPumpIcon = L.icon({
-    iconUrl: 'images/redmarkericon.png', // Replace with the path to your icon
-    iconSize: [32, 32], // Icon size
-    iconAnchor: [16, 32], // Anchor point for the marker
-    popupAnchor: [0, -32] // Position of the popup
+    iconUrl: 'images/gas-pump.png', // Replace with the path to your icon
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
 });
 
-// Function to fetch gas stations and add them to the map
+// Function to fetch and display gas stations
 function fetchGasStations(lat, lon) {
-    const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`; // Adjust bounding box size as needed
+    const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`;
     const query = `
 [out:json][timeout:25];
 node["amenity"="fuel"](${boundingBox});
@@ -38,52 +38,78 @@ out body;
             'Content-Type': 'text/plain'
         }
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Overpass API error: ${response.statusText}`);
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data.elements && data.elements.length > 0) {
                 data.elements.forEach(element => {
                     if (element.lat && element.lon) {
-                        const stationName = element.tags && element.tags.name ? element.tags.name : "Gas Station";
+                        const stationName = element.tags.name || "Unnamed Gas Station";
+                        const popupContent = `
+                            <strong>${stationName}</strong><br>
+                            Latitude: ${element.lat.toFixed(6)}<br>
+                            Longitude: ${element.lon.toFixed(6)}
+                        `;
 
-                        // Add marker with the custom icon and popup
                         L.marker([element.lat, element.lon], { icon: gasPumpIcon })
                             .addTo(gasStationMarkers)
-                            .bindPopup(`<strong>${stationName}</strong>`);
+                            .bindPopup(popupContent);
                     }
                 });
             } else {
-                alert("No gas stations found in this area.");
+                alert('No gas stations found in this area.');
             }
         })
-        .catch(error => {
-            console.error('Error fetching gas station data:', error);
-            alert("Failed to fetch gas station data. Check the console for details.");
-        });
+        .catch(error => console.error('Error fetching gas stations:', error));
 }
 
-// Function to locate the user and display gas stations
+// Function to locate the user and fetch nearby gas stations
 function locateUser() {
     map.locate({ setView: true, maxZoom: 14 });
 
     map.on('locationfound', (e) => {
         const { lat, lng } = e.latlng;
 
-        // Add a marker for the user's location
+        // Add marker for user's location
         L.marker([lat, lng]).addTo(map).bindPopup('You are here!').openPopup();
 
-        // Fetch gas stations near the user's location
+        // Fetch nearby gas stations
         fetchGasStations(lat, lng);
     });
 
     map.on('locationerror', () => {
-        alert("Unable to retrieve your location. Please enable location services.");
+        alert('Unable to retrieve your location. Please enable location services.');
     });
 }
 
-// Automatically locate the user when the map loads
-locateUser();
+// Function to search for a location
+function searchLocation() {
+    const location = document.getElementById('search-input').value;
+    if (!location) {
+        alert('Please enter a location.');
+        return;
+    }
+
+    // Use Nominatim to get coordinates for the entered location
+    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(location)}&format=json`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                const { lat, lon } = data[0];
+                map.setView([lat, lon], 14);
+
+                // Fetch gas stations near the searched location
+                fetchGasStations(parseFloat(lat), parseFloat(lon));
+            } else {
+                alert('Location not found. Please try again.');
+            }
+        })
+        .catch(error => console.error('Error searching location:', error));
+}
+
+// Event listeners for buttons
+document.getElementById('locate-button').addEventListener('click', locateUser);
+document.getElementById('search-button').addEventListener('click', searchLocation);
+
+// Automatically fetch gas stations for Romania on page load
+fetchGasStations(45.9432, 24.9668);
+

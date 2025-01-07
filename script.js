@@ -12,7 +12,7 @@ let gasStationMarkers = new L.LayerGroup().addTo(map);
 
 // Custom gas pump icon
 const gasPumpIcon = L.icon({
-    iconUrl: 'images/gas-pump.png', // Replace with the path to your icon
+    iconUrl: 'images/redmarkericon.png', // Replace with the path to your icon
     iconSize: [32, 32], // Icon size
     iconAnchor: [16, 32], // Anchor point for the marker
     popupAnchor: [0, -32] // Position of the popup

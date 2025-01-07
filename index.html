@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Reset styles */
         body, html {
             margin: 0;
             padding: 0;
@@ -15,12 +14,6 @@
             font-family: 'Roboto', sans-serif;
         }
 
-        /* Full-screen map container */
-        #map {
-            height: calc(100vh - 60px); /* Leave space for header */
-        }
-
-        /* Header styling */
         #header {
             display: flex;
             justify-content: space-between;
@@ -37,8 +30,7 @@
             font-size: 20px;
         }
 
-        /* Locate button */
-        .locate-btn {
+        .locate-btn, .search-btn {
             background-color: #ffffff;
             color: #4CAF50;
             padding: 8px 16px;
@@ -49,11 +41,26 @@
             transition: background-color 0.3s ease;
         }
 
-        .locate-btn:hover {
+        .locate-btn:hover, .search-btn:hover {
             background-color: #dff0d8;
         }
 
-        /* Popup content styling */
+        #search-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #search-input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        #map {
+            height: calc(100vh - 60px);
+        }
+
         .leaflet-popup-content {
             font-size: 14px;
         }
@@ -65,18 +72,19 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div id="header">
         <h1>Gas Station Finder</h1>
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Enter location or address" />
+            <button class="search-btn" id="search-button">Search</button>
+        </div>
         <button class="locate-btn" id="locate-button">Locate Me</button>
     </div>
 
-    <!-- Map -->
     <div id="map"></div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Custom JS -->
     <script src="script.js"></script>
 </body>
 </html>
+

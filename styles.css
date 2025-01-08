@@ -36,36 +36,62 @@ body {
     font-weight: 400;
 }
 
+.search-locate-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f4f4f4;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
 .search-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px 20px;
+    width: 60%;
+    max-width: 600px;
 }
 
 #search-input {
     flex: 1;
-    max-width: 400px;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 15px;
+    font-size: 1.1rem;
+    border: 2px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    outline: none;
 }
 
 #search-button {
-    padding: 10px 20px;
-    font-size: 1rem;
+    padding: 15px 20px;
+    font-size: 1.1rem;
     background-color: #4caf50;
     color: white;
     border: none;
-    border-radius: 5px;
-    margin-left: 10px;
+    border-radius: 0 5px 5px 0;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 #search-button:hover {
     background-color: #388e3c;
+}
+
+#locate-button {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#locate-button:hover {
+    background-color: #1976d2;
 }
 
 .map-container {
@@ -76,26 +102,6 @@ body {
 #map {
     height: 100%;
     width: 100%;
-}
-
-#locate-button {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 20px;
-    font-size: 1rem;
-    background-color: #2196f3;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 1000;
-}
-
-#locate-button:hover {
-    background-color: #1976d2;
 }
 
 footer {

@@ -3,88 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gas Station Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        #header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 18px;
-            height: 60px;
-        }
-
-        #header h1 {
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .locate-btn, .search-btn {
-            background-color: #ffffff;
-            color: #4CAF50;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .locate-btn:hover, .search-btn:hover {
-            background-color: #dff0d8;
-        }
-
-        #search-container {
-            display: flex;
-            gap: 10px;
-        }
-
-        #search-input {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 200px;
-        }
-
-        #map {
-            height: calc(100vh - 60px);
-        }
-
-        .leaflet-popup-content {
-            font-size: 14px;
-        }
-
-        .leaflet-popup-content strong {
-            font-size: 16px;
-            color: #333;
-        }
-    </style>
+    <title>StationSpotter - Find Your Fuel Fast</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="header">
-        <h1>Gas Station Finder</h1>
-        <div id="search-container">
-            <input type="text" id="search-input" placeholder="Enter location or address" />
-            <button class="search-btn" id="search-button">Search</button>
+    <div class="container">
+        <header class="app-header">
+            <h1>🚗 StationSpotter</h1>
+            <p>Your ultimate gas station locator!</p>
+        </header>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search for a city or address...">
+            <button id="search-button">🔍 Search</button>
         </div>
-        <button class="locate-btn" id="locate-button">Locate Me</button>
+        <div id="map" class="map-container"></div>
+        <button id="locate-button">📍 Find My Location</button>
     </div>
 
-    <div id="map"></div>
+    <footer>
+        <p>Made with ❤️ by StationSpotter Team</p>
+    </footer>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+
 

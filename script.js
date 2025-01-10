@@ -1,5 +1,5 @@
 let map = L.map('map').setView([45.9432, 24.9668], 7); // Default center: Romania
-let gasStationMarkers = new L.LayerGroup().addTo(map); // Layer for gas station markers
+let gasStationMarkers = new L.LayerGroup().addTo(map);
 
 // Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -7,25 +7,20 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Function to fetch and display gas stations based on a bounding box
+// Fetch and display gas stations
 function fetchGasStations(lat, lon) {
-    const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`; // Adjust bounding box size as needed
+    const boundingBox = `${lat - 0.5},${lon - 0.5},${lat + 0.5},${lon + 0.5}`;
     const query = `
 [out:json][timeout:25];
 node["amenity"="fuel"](${boundingBox});
 out body;
     `;
-
-    // Clear existing markers
     gasStationMarkers.clearLayers();
 
-    // Fetch data from Overpass API
     fetch('https://overpass-api.de/api/interpreter', {
         method: 'POST',
         body: query,
-        headers: {
-            'Content-Type': 'text/plain'
-        }
+        headers: { 'Content-Type': 'text/plain' }
     })
         .then(response => response.json())
         .then(data => {
@@ -37,34 +32,23 @@ out body;
                             .bindPopup(element.tags.name || 'Gas Station');
                     }
                 });
-            } else {
-                console.error('No gas stations found in this area.');
             }
         })
-        .catch(error => console.error('Error fetching Overpass API data:', error));
+        .catch(error => console.error('Error fetching Overpass API:', error));
 }
 
-// Function to locate the user and update gas stations
+// Locate user
 function locateUser() {
     map.locate({ setView: true, maxZoom: 14 });
-
-    map.on('locationfound', (e) => {
+    map.on('locationfound', e => {
         const { lat, lng } = e.latlng;
-
-        // Add a marker for the user's location
         L.marker([lat, lng]).addTo(map).bindPopup('You are here!').openPopup();
-
-        // Fetch gas stations near the user's location
         fetchGasStations(lat, lng);
     });
-
-    map.on('locationerror', (e) => {
-        alert("Unable to retrieve your location. Please enable location services.");
-    });
+    map.on('locationerror', () => alert('Unable to retrieve your location.'));
 }
 
-// Event listeners
-document.getElementById('locate-button').addEventListener('click', locateUser);
+// Search functionality
 document.getElementById('search-button').addEventListener('click', () => {
     const searchInput = document.getElementById('search-input').value;
     fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchInput)}`)
@@ -75,8 +59,14 @@ document.getElementById('search-button').addEventListener('click', () => {
                 map.setView([lat, lon], 14);
                 fetchGasStations(parseFloat(lat), parseFloat(lon));
             } else {
-                alert("Location not found. Please try again.");
+                alert('Location not found.');
             }
         })
-        .catch(error => console.error('Error fetching location data:', error));
+        .catch(error => console.error('Error fetching location:', error));
 });
+
+// Locate button
+document.getElementById('locate-button').addEventListener('click', locateUser);
+
+// Initial Gas Stations
+fetchGasStations(45.9432, 24.9668);

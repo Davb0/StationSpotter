@@ -16,19 +16,21 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
 }
 
+/* Header Styling */
 .app-header {
     text-align: center;
     background: linear-gradient(135deg, #4caf50, #2e7d32);
     color: white;
-    padding: 20px;
+    padding: 20px 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .app-header h1 {
     font-size: 2rem;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .app-header p {
@@ -36,6 +38,7 @@ body {
     font-weight: 400;
 }
 
+/* Search and Locate Section */
 .search-locate-container {
     display: flex;
     justify-content: center;
@@ -44,70 +47,26 @@ body {
     padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    gap: 10px;
 }
 
 .search-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60%;
+    flex: 1;
     max-width: 600px;
 }
 
 #search-input {
     flex: 1;
-    padding: 15px;
-    font-size: 1.1rem;
+    padding: 12px;
+    font-size: 1rem;
     border: 2px solid #ccc;
     border-radius: 5px 0 0 5px;
     outline: none;
+    min-width: 0;
 }
 
 #search-button {
-    padding: 15px 20px;
-    font-size: 1.1rem;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#search-button:hover {
-    background-color: #388e3c;
-}
-
-#locate-button {
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    background-color: #2196f3;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-left: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#locate-button:hover {
-    background-color: #1976d2;
-}
-
-.map-container {
-    flex: 1;
-    position: relative;
-}
-
-#map {
-    height: 100%;
-    width: 100%;
-}
-
-footer {
-    text-align: center;
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    font-size: 0.9rem;
-}
+    padding: 12px

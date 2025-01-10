@@ -3,32 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StationSpotter - Find Your Fuel Fast</title>
+    <title>StationSpotter</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
     <div class="container">
+        <!-- Header Section -->
         <header class="app-header">
-            <h1>🚗 StationSpotter</h1>
-            <p>Your ultimate gas station locator!</p>
+            <h1>StationSpotter</h1>
+            <p>Find Gas Stations Anywhere</p>
         </header>
+
+        <!-- Search and Locate Section -->
         <div class="search-locate-container">
             <div class="search-container">
-                <input type="text" id="search-input" placeholder="Enter city or address...">
-                <button id="search-button">🔍 Search</button>
+                <input id="search-input" type="text" placeholder="Enter a location or address">
+                <button id="search-button">Search</button>
             </div>
-            <button id="locate-button">📍 Locate Me</button>
+            <button id="locate-button" class="locate-me">Locate Me</button>
         </div>
-        <div id="map" class="map-container"></div>
+
+        <!-- Map Section -->
+        <div id="map"></div>
     </div>
 
-    <footer>
-        <p>Made with ❤️ by StationSpotter Team</p>
-    </footer>
-
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

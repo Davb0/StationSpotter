@@ -3,28 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StationSpotter</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Gas Station Locator</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="container">
-        <!-- Header Section -->
-        <header class="app-header">
-            <h1>StationSpotter</h1>
-        </header>
-
-        <!-- Search and Locate Section -->
+    <div class="header">
+        <h1>Gas Station Locator</h1>
         <div class="controls">
-            <input id="search-input" type="text" placeholder="Enter location or address">
-            <button id="search-button">Search</button>
-            <button id="locate-button">Locate Me</button>
+            <input type="text" id="locationInput" placeholder="Enter a location" />
+            <button id="searchButton">Search</button>
+            <button id="locateMeButton">Locate Me</button>
         </div>
-
-        <!-- Map Section -->
-        <div id="map"></div>
     </div>
+    <div id="map"></div>
+    <footer>
+        <p>&copy; 2025 Gas Station Locator. Powered by OpenStreetMap and Leaflet.</p>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
